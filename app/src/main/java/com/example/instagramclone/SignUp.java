@@ -8,12 +8,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+import com.shashank.sony.fancytoastlib.FancyToast;
+
+import java.util.List;
 
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener {
@@ -21,6 +25,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     private Button btnSave;
     private EditText edtName,edtPunchSpeed,edtPunchPower,edtKickSpeed,edtKickPower;
     private TextView txtGetData;
+    private Button btnGet;
+    private String allKickBoxers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +34,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
 //        ParseInstallation.getCurrentInstallation().saveInBackground();
 
         btnSave = findViewById(R.id.btnSave);
+        btnGet = findViewById(R.id.btnGet);
         btnSave.setOnClickListener(SignUp.this);
 
         edtName = findViewById(R.id.edtName);
@@ -42,14 +49,41 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Kicker");
-                parseQuery.getInBackground("sTv4NzdbRu", new GetCallback<ParseObject>() {
+                parseQuery.getInBackground("Bmc3GHDcET", new GetCallback<ParseObject>() {
                     @Override
                     public void done(ParseObject object, ParseException e) {
                         if (object != null && e == null) {
-                            txtGetData.setText(object.get("name") + "");
+                            txtGetData.setText(object.get("name") + "-" + "Punch Power: " + object.get("punch_power") );
                         }
                     }
                 });
+            }
+        });
+
+        btnGet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                allKickBoxers = "";
+                ParseQuery<ParseObject> queryAll = ParseQuery.getQuery("Kicker");
+                queryAll.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+                        if (e ==null) {
+                            if (objects.size() > 0){
+                                for (ParseObject kickBoxer : objects) {
+                                    allKickBoxers = allKickBoxers + kickBoxer.get("name") + "\n";
+                                }
+                                FancyToast.makeText(SignUp.this,allKickBoxers,FancyToast.LENGTH_LONG,FancyToast.SUCCESS,true).show();
+
+                            }
+                            else {
+                                FancyToast.makeText(SignUp.this,e.getMessage(),FancyToast.LENGTH_LONG, FancyToast.ERROR,true).show();
+                            }
+                        }
+
+                    }
+                });
+
             }
         });
 
