@@ -41,7 +41,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         txtGetData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("kickBoxer");
+                ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Kicker");
                 parseQuery.getInBackground("sTv4NzdbRu", new GetCallback<ParseObject>() {
                     @Override
                     public void done(ParseObject object, ParseException e) {
