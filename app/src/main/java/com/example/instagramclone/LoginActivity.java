@@ -16,6 +16,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText edtLoginEmail,edtLoginPassword;
     private Button btnLoginActivity,btnSignUpLoginActivity;
@@ -49,7 +50,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnSignUpLoginActivity.setOnClickListener(this);
 
         if(ParseUser.getCurrentUser() != null){
-            ParseUser.getCurrentUser().logOut();
+       //     ParseUser.getCurrentUser().logOut();
+            transitionToSocialMediaActivity();
         }
     }
 
@@ -62,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void done(ParseUser user, ParseException e) {
                         if(user != null && e == null){
                             FancyToast.makeText(LoginActivity.this,user.getUsername() + " is logged in now", FancyToast.LENGTH_LONG,FancyToast.SUCCESS,true).show();
-
+                            transitionToSocialMediaActivity();
                         }
                     }
                 });
@@ -73,5 +75,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             break;
         }
 
+    }
+
+    private void transitionToSocialMediaActivity() {
+        Intent intent = new Intent(LoginActivity.this,SocialMediaActivity.class);
+        startActivity(intent);
     }
 }

@@ -58,7 +58,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
 
         if(ParseUser.getCurrentUser() != null){
-            ParseUser.getCurrentUser().logOut();
+            transitionToSocialMediaActivity();
+     //        ParseUser.getCurrentUser().logOut();
         }
 
     }
@@ -71,6 +72,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 if(edtEmail.getText().toString().equals(" ") ||
                         edtUserName.getText().toString().equals(" ") || edtPassword.getText().toString().equals(" ")){
                     FancyToast.makeText(SignUp.this,"Email,Username and Password is Required",FancyToast.LENGTH_LONG,FancyToast.INFO,true).show();
+
 
                 }
                 else {
@@ -89,7 +91,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                         public void done(ParseException e) {
                             if (e == null) {
                                 FancyToast.makeText(SignUp.this, appUser.getUsername() + " is signed up", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true).show();
-
+                                transitionToSocialMediaActivity();
                             } else {
                                 FancyToast.makeText(SignUp.this, "There was an error" + e.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, true).show();
                             }
@@ -112,7 +114,19 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         }
     }
     public void rootLayoutTapped(View view){
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+
+        try{
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+
+        } catch(Exception e){
+            e.printStackTrace();
+          }
+
+    }
+
+    private void transitionToSocialMediaActivity() {
+        Intent intent = new Intent(SignUp.this,SocialMediaActivity.class);
+        startActivity(intent);
     }
 }
